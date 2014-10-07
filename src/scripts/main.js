@@ -7,7 +7,7 @@
     var OFCanvasBorderComponent = require('./OFCanvasBorderComponent');
     var OFCanvasComponent = require('./OFCanvasComponent');
     var OFCanvasCompositeComponent = require('./OFCanvasCompositeComponent');
-    var OFExampleComponent = require('./OFExampleComponent');
+    var OFExampleCustomTag = require('./OFExampleCustomTag');
 
     if (typeof(module) !== 'undefined' && module.exports) {
         module.exports.FractionalLayoutManager = FractionalLayoutManager;
@@ -15,7 +15,7 @@
         module.exports.OFCanvasBorderComponent = OFCanvasBorderComponent;
         module.exports.OFCanvasComponent = OFCanvasComponent;
         module.exports.OFCanvasCompositeComponent = OFCanvasCompositeComponent;
-        module.exports.OFExampleComponent = OFExampleComponent;
+        module.exports.OFExampleCustomTag = OFExampleCustomTag;
     } else {
         root.ofcanvas = {
             FractionalLayoutManager: FractionalLayoutManager,
@@ -23,7 +23,7 @@
             OFCanvasBorderComponent: OFCanvasBorderComponent,
             OFCanvasComponent: OFCanvasComponent,
             OFCanvasCompositeComponent: OFCanvasCompositeComponent,
-            OFExampleComponent: OFExampleComponent
+            OFExampleCustomTag: OFExampleCustomTag
         };
     }
 })(this); //jshint ignore:line

@@ -48,6 +48,6 @@ TablePrototype.attachedCallback = function() {
 
 };
 
-module.exports = document.registerElement('open-table', {
+module.exports = document.registerElement('of-example-custom-tag', {
     prototype: TablePrototype
 });
