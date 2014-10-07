@@ -1,13 +1,12 @@
 {
   "name": "ofcanvas",
-  "main": "main.js",
+  "main": "src/scripts/main.js",
   "version": "0.0.0",
   "homepage": "https://github.com/stevewirts/ofcanvas",
   "authors": [
     "steve wirts <stevewirts@gmail.com>"
   ],
   "description": "this is a custom web component canvas control and includes a small ui framework for building custom components that render on the canvas",
-  "main": "/scripts/*.js",
   "keywords": [
     "html5",
     "web-component",
