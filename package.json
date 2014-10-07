@@ -1,0 +1,51 @@
+{
+  "name": "ofcanvas",
+  "version": "0.0.1",
+  "description": "this is a custom web component canvas control and includes a small ui framework for building custom components that render on the canvas",
+  "directories": {
+    "src": "src",
+    "test": "test",
+    "example": "examples"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "browserify": "^5.11.0",
+    "debowerify": "^0.8.2",
+    "grunt": "~0.4.1",
+    "grunt-autoprefixer": "~0.4.0",
+    "grunt-browserify": "^3.0.0",
+    "grunt-cli": "^0.1",
+    "grunt-concurrent": "~0.5.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-htmlmin": "~0.1.3",
+    "grunt-contrib-imagemin": "~0.3.0",
+    "grunt-contrib-jshint": "^0.10",
+    "grunt-contrib-watch": "^0.6",
+    "grunt-html-validation": "^0.1.18",
+    "grunt-jsbeautifier": "^0.2.7",
+    "grunt-mocha-test": "^0.10",
+    "grunt-newer": "~0.6.1",
+    "grunt-prettify": "^0.3.5",
+    "grunt-sass": "^0.14.0",
+    "grunt-svgmin": "~0.2.0",
+    "jshint": "^2.5.0",
+    "jshint-stylish": "~0.1.3",
+    "load-grunt-tasks": "~0.4.0",
+    "mocha": "^1.17",
+    "remapify": "^1.2.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stevewirts/ofcanvas.git"
+  },
+  "author": "steve wirts",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "",
+  "keywords": []
+}

@@ -1,0 +1,8 @@
+/build
+/deploy
+/app
+node_modules
+build
+.tmp
+.sass-cache
+validation-*.json
