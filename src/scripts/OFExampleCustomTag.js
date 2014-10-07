@@ -6,9 +6,9 @@ var OFCanvas = require('./OFCanvas');
 var OFCanvasComponent = require('./OFCanvasComponent');
 var OFCanvasBorderComponent = require('./OFCanvasBorderComponent');
 
-var TablePrototype = Object.create(HTMLElement.prototype);
+var OFExampleCustomTag = Object.create(HTMLElement.prototype);
 
-TablePrototype.attachedCallback = function() {
+OFExampleCustomTag.attachedCallback = function() {
 
     var canvas = new OFCanvas();
     canvas.setAttribute('fps', 30);
@@ -49,5 +49,5 @@ TablePrototype.attachedCallback = function() {
 };
 
 module.exports = document.registerElement('of-example-custom-tag', {
-    prototype: TablePrototype
+    prototype: OFExampleCustomTag
 });
