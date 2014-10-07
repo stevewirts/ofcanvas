@@ -28,6 +28,7 @@
     "tests"
   ],
   "devDependencies": {
+    "rectangles": "*"
   },
   "dependencies": {
     "rectangles": "*"
