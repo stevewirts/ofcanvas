@@ -54,14 +54,21 @@ CanvasPrototype.attachedCallback = function() {
         canvas.width = buffer.width = self.scrollWidth;
         canvas.height = buffer.height = self.scrollHeight;
         size = self.getBoundingClientRect();
-
-        if (component) {
-            var bounds = new g.Rectangle(0, 0, size.width, size.height);
-            component.setBounds(bounds);
-        }
-
-        paintNow();
+        self.bounds = new g.Rectangle(0, 0, size.width, size.height);
     };
+
+    Object.observe(this, function(changes) {
+        changes.forEach(function(e) {
+            if (e.name === 'bounds') {
+                if (component) {
+                    component.setBounds(self.bounds);
+                }
+                self.resizeNotification();
+                paintNow();
+            }
+        });
+
+    }, ['update']);
 
     var paintNow = function() {
         var gc = buffer.getContext('2d');
@@ -87,7 +94,7 @@ CanvasPrototype.attachedCallback = function() {
     };
 
     this.repaint = function() {
-        paintNow = true;
+        repaintNow = true;
     };
 
     this.addComponent = function(comp) {
@@ -106,6 +113,10 @@ CanvasPrototype.attachedCallback = function() {
 
     resize();
     beginPainting();
+};
+
+CanvasPrototype.resizeNotification = function() {
+    //to be overridden
 };
 
 module.exports = document.registerElement('open-canvas', {
