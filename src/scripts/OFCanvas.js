@@ -119,6 +119,10 @@ CanvasPrototype.resizeNotification = function() {
     //to be overridden
 };
 
+CanvasPrototype.getBounds = function() {
+    return this.bounds;
+};
+
 module.exports = document.registerElement('open-canvas', {
     prototype: CanvasPrototype
 });
