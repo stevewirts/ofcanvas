@@ -9,9 +9,9 @@ var CanvasPrototype = Object.create(HTMLElement.prototype);
 CanvasPrototype.attachedCallback = function() {
 
     var self = this;
+    this.style.overflow = 'hidden';
     var documentFragment = document.createDocumentFragment();
     documentFragment.appendChild(document.createElement('canvas'));
-
     var shadowRoot = this.createShadowRoot();
     shadowRoot.appendChild(document.createElement('canvas'));
     var canvas = shadowRoot.querySelector('canvas');
@@ -21,6 +21,12 @@ CanvasPrototype.attachedCallback = function() {
     var repaintNow = false;
     var size = null;
     var component = new OFCanvasCompositeComponent();
+    var mouseLocation = new g.Point(-1, -1);
+    var mousedown = false;
+    var dragging = false;
+    var dragstart = new g.Point(-1,-1);
+    var origin = new g.Point(0,0);
+
     component.setParent(this);
 
     var beginPainting = function() {
@@ -54,6 +60,7 @@ CanvasPrototype.attachedCallback = function() {
         canvas.width = buffer.width = self.scrollWidth;
         canvas.height = buffer.height = self.scrollHeight;
         size = self.getBoundingClientRect();
+        origin = new g.Point(size.left,size.top);
         self.bounds = new g.Rectangle(0, 0, size.width, size.height);
     };
 
@@ -109,7 +116,89 @@ CanvasPrototype.attachedCallback = function() {
         component.clearComponents();
     };
 
-    this.style.overflow = 'hidden';
+    this.getMouseLocation = function() {
+        return mouseLocation;
+    };
+
+    this.getOrigin = function() {
+        return origin;
+    };
+
+    document.addEventListener('mousemove', function(e) {
+        var o = self.getOrigin();
+        if (!dragging && mousedown) {
+            dragging = true;
+            self.dispatchEvent(new CustomEvent('of-dragstart',{
+                detail: {
+                    mouse:mouseLocation
+                }
+            }));
+            dragstart = new g.Point(mouseLocation.x, mouseLocation.y);
+        }
+        mouseLocation = new g.Point(e.x - o.x, e.y - o.y);
+        if (dragging) {
+            self.dispatchEvent(new CustomEvent('of-drag',{
+                detail: {
+                    mouse:mouseLocation,
+                    dragstart: dragstart
+                }
+            }));
+        }
+        if (self.bounds.contains(mouseLocation)) {
+            self.dispatchEvent(new CustomEvent('of-mousemove',{
+                detail: {
+                    mouse:mouseLocation
+                }
+            }));
+        }
+    });
+
+    this.addEventListener('mousedown', function(e) {
+
+        mouseLocation = new g.Point(e.offsetX, e.offsetY);
+        mousedown = true;
+
+        self.dispatchEvent(new CustomEvent('of-mousedown',{
+            detail: {
+                mouse: new g.Point(e.offsetX, e.offsetY)
+            }
+        }));
+
+    });
+
+    document.addEventListener('mouseup', function() {
+        if (dragging) {
+            self.dispatchEvent(new CustomEvent('of-dragend',{
+                detail: {
+                    mouse:mouseLocation,
+                    dragstart: dragstart
+                }
+            }));
+            dragging = false;
+        }
+        mousedown = false;
+        mouseLocation = new g.Point(-1, -1);
+        self.dispatchEvent(new CustomEvent('of-mouseup',{
+            detail: {
+                    mouse:mouseLocation
+            }
+        }));
+    });
+
+    this.addEventListener('mouseout', function() {
+        if (!mousedown) {
+            mouseLocation = new g.Point(-1, -1);
+        }
+        self.dispatchEvent(new CustomEvent('of-mouseout',{
+            detail: {
+                mouse:mouseLocation
+            }
+        }));
+    });
+
+    this.addEventListener('of-dragend', function(e) {
+        console.log(e);
+    });
 
     resize();
     beginPainting();
