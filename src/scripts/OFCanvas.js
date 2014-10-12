@@ -196,10 +196,6 @@ CanvasPrototype.attachedCallback = function() {
         }));
     });
 
-    this.addEventListener('of-dragend', function(e) {
-        console.log(e);
-    });
-
     resize();
     beginPainting();
 };
