@@ -37,8 +37,6 @@ CanvasPrototype.attachedCallback = function() {
     focuser.style.padding = 0;
     focuser.style.border = 0;
 
-    //<button class="focuser" id="focuser-<%=id%>" style="position:static;top:0;left:0;right:100%;bottom:100%;margin:0;padding:0;border:0"></button>
-
     component.setParent(this);
 
     var beginPainting = function() {
@@ -185,17 +183,35 @@ CanvasPrototype.attachedCallback = function() {
     };
 
     var ofkeydown = function(e) {
+        var keyChar = e.shiftKey ? charMap[e.keyCode][1] : charMap[e.keyCode][0];
         self.dispatchEvent(new CustomEvent('of-keydown', {
             detail: {
-                e: e
+                alt: e.altKey,
+                ctrl: e.ctrlKey,
+                char: keyChar,
+                code: e.charCode,
+                key: e.keyCode,
+                meta: e.metaKey,
+                repeat: e.repeat,
+                shift: e.shiftKey,
+                identifier: e.keyIdentifier
             }
         }));
     };
 
     var ofkeyup = function(e) {
+        var keyChar = e.shiftKey ? charMap[e.keyCode][1] : charMap[e.keyCode][0];
         self.dispatchEvent(new CustomEvent('of-up', {
             detail: {
-                e: e
+                alt: e.altKey,
+                ctrl: e.ctrlKey,
+                char: keyChar,
+                code: e.charCode,
+                key: e.keyCode,
+                meta: e.metaKey,
+                repeat: e.repeat,
+                shift: e.shiftKey,
+                identifier: e.keyIdentifier
             }
         }));
     };
@@ -276,3 +292,77 @@ CanvasPrototype.getBounds = function() {
 module.exports = document.registerElement('open-canvas', {
     prototype: CanvasPrototype
 });
+
+
+//80/20 key mappings
+
+var charMap = [];
+var empty = ['', ''];
+for (var i = 0; i < 256; i++) {
+    charMap[i] = empty;
+}
+
+charMap[27] = ['ESC', 'ESC-SHIFT'];
+charMap[192] = ['`', '~'];
+charMap[49] = ['1', '!'];
+charMap[50] = ['2', '@'];
+charMap[51] = ['3', '#'];
+charMap[52] = ['4', '$'];
+charMap[53] = ['5', '%'];
+charMap[54] = ['6', '^'];
+charMap[55] = ['7', '&'];
+charMap[56] = ['8', '*'];
+charMap[57] = ['9', '('];
+charMap[48] = ['0', ')'];
+charMap[189] = ['-', '_'];
+charMap[187] = ['=', '+'];
+charMap[8] = ['DELETE', 'DELETE-SHIFT'];
+charMap[9] = ['TAB', 'TAB-SHIFT'];
+charMap[81] = ['q', 'Q'];
+charMap[87] = ['w', 'W'];
+charMap[69] = ['e', 'E'];
+charMap[82] = ['r', 'R'];
+charMap[84] = ['t', 'T'];
+charMap[89] = ['y', 'Y'];
+charMap[85] = ['u', 'U'];
+charMap[73] = ['i', 'I'];
+charMap[79] = ['o', 'O'];
+charMap[80] = ['p', 'P'];
+charMap[219] = ['[', '{'];
+charMap[221] = [']', '}'];
+charMap[220] = ['\\', '|'];
+charMap[220] = ['CAPSLOCK', 'CAPSLOCK-SHIFT'];
+charMap[65] = ['a', 'A'];
+charMap[83] = ['s', 'S'];
+charMap[68] = ['d', 'D'];
+charMap[70] = ['f', 'F'];
+charMap[71] = ['g', 'G'];
+charMap[72] = ['h', 'H'];
+charMap[74] = ['j', 'J'];
+charMap[75] = ['k', 'K'];
+charMap[76] = ['l', 'L'];
+charMap[186] = [';', ':'];
+charMap[222] = ['\'', '|'];
+charMap[13] = ['RETURN', 'RETURN-SHIFT'];
+charMap[16] = ['SHIFT', 'SHIFT'];
+charMap[90] = ['z', 'Z'];
+charMap[88] = ['x', 'X'];
+charMap[67] = ['c', 'C'];
+charMap[86] = ['v', 'V'];
+charMap[66] = ['b', 'B'];
+charMap[78] = ['n', 'N'];
+charMap[77] = ['m', 'M'];
+charMap[188] = [',', '<'];
+charMap[190] = ['.', '>'];
+charMap[191] = ['/', '?'];
+charMap[16] = ['SHIFT', 'SHIFT'];
+charMap[17] = ['CTRL', 'CTRL-SHIFT'];
+charMap[18] = ['ALT', 'ALT-SHIFT'];
+charMap[91] = ['COMMAND-LEFT', 'COMMAND-LEFT-SHIFT'];
+charMap[32] = ['SPACE', 'SPACE-SHIFT'];
+charMap[93] = ['COMMAND-RIGHT', 'COMMAND-RIGHT-SHIFT'];
+charMap[18] = ['ALT', 'ALT-SHIFT'];
+charMap[38] = ['UP', 'UP-SHIFT'];
+charMap[37] = ['LEFT', 'LEFT-SHIFT'];
+charMap[40] = ['DOWN', 'DOWN-SHIFT'];
+charMap[39] = ['RIGHT', 'RIGHT-SHIFT'];
