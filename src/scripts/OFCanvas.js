@@ -201,7 +201,7 @@ CanvasPrototype.attachedCallback = function() {
 
     var ofkeyup = function(e) {
         var keyChar = e.shiftKey ? charMap[e.keyCode][1] : charMap[e.keyCode][0];
-        self.dispatchEvent(new CustomEvent('of-up', {
+        self.dispatchEvent(new CustomEvent('of-keyup', {
             detail: {
                 alt: e.altKey,
                 ctrl: e.ctrlKey,
