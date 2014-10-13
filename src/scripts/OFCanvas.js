@@ -1,4 +1,4 @@
-/* globals HTMLElement, document, requestAnimationFrame */
+/* globals HTMLElement, document, requestAnimationFrame, CustomEvent */
 'use strict';
 
 var g = require('rectangles');
@@ -24,8 +24,20 @@ CanvasPrototype.attachedCallback = function() {
     var mouseLocation = new g.Point(-1, -1);
     var mousedown = false;
     var dragging = false;
-    var dragstart = new g.Point(-1,-1);
-    var origin = new g.Point(0,0);
+    var dragstart = new g.Point(-1, -1);
+    var origin = new g.Point(0, 0);
+    shadowRoot.appendChild(document.createElement('button'));
+    var focuser = shadowRoot.querySelector('button');
+    var focused = false;
+    focuser.style.position = 'static';
+    focuser.style.top = 0;
+    focuser.style.right = '100%';
+    focuser.style.bottom = '100%';
+    focuser.style.left = 0;
+    focuser.style.padding = 0;
+    focuser.style.border = 0;
+
+    //<button class="focuser" id="focuser-<%=id%>" style="position:static;top:0;left:0;right:100%;bottom:100%;margin:0;padding:0;border:0"></button>
 
     component.setParent(this);
 
@@ -60,7 +72,7 @@ CanvasPrototype.attachedCallback = function() {
         canvas.width = buffer.width = self.scrollWidth;
         canvas.height = buffer.height = self.scrollHeight;
         size = self.getBoundingClientRect();
-        origin = new g.Point(size.left,size.top);
+        origin = new g.Point(size.left, size.top);
         self.bounds = new g.Rectangle(0, 0, size.width, size.height);
     };
 
@@ -96,6 +108,119 @@ CanvasPrototype.attachedCallback = function() {
         }
     };
 
+    var ofmousemove = function(e) {
+        var o = self.getOrigin();
+        if (!dragging && mousedown) {
+            dragging = true;
+            self.dispatchEvent(new CustomEvent('of-dragstart', {
+                detail: {
+                    mouse: mouseLocation
+                }
+            }));
+            dragstart = new g.Point(mouseLocation.x, mouseLocation.y);
+        }
+        mouseLocation = new g.Point(e.x - o.x, e.y - o.y);
+        if (dragging) {
+            self.dispatchEvent(new CustomEvent('of-drag', {
+                detail: {
+                    mouse: mouseLocation,
+                    dragstart: dragstart
+                }
+            }));
+        }
+        if (self.bounds.contains(mouseLocation)) {
+            self.dispatchEvent(new CustomEvent('of-mousemove', {
+                detail: {
+                    mouse: mouseLocation
+                }
+            }));
+        }
+    };
+
+    var ofmousedown = function(e) {
+
+        mouseLocation = new g.Point(e.offsetX, e.offsetY);
+        mousedown = true;
+
+        self.dispatchEvent(new CustomEvent('of-mousedown', {
+            detail: {
+                mouse: new g.Point(e.offsetX, e.offsetY)
+            }
+        }));
+        if (document.activeElement !== focuser) {
+            setTimeout(function() {
+                focuser.focus();
+            }, 1);
+        }
+    };
+
+    var ofmouseup = function() {
+        if (dragging) {
+            self.dispatchEvent(new CustomEvent('of-dragend', {
+                detail: {
+                    mouse: mouseLocation,
+                    dragstart: dragstart
+                }
+            }));
+            dragging = false;
+        }
+        mousedown = false;
+        mouseLocation = new g.Point(-1, -1);
+        self.dispatchEvent(new CustomEvent('of-mouseup', {
+            detail: {
+                mouse: mouseLocation
+            }
+        }));
+    };
+
+    var ofmouseout = function() {
+        if (!mousedown) {
+            mouseLocation = new g.Point(-1, -1);
+        }
+        self.dispatchEvent(new CustomEvent('of-mouseout', {
+            detail: {
+                mouse: mouseLocation
+            }
+        }));
+    };
+
+    var ofkeydown = function(e) {
+        console.log(e);
+        self.dispatchEvent(new CustomEvent('of-keydown', {
+            detail: {
+                e: e
+            }
+        }));
+    };
+
+    var ofkeyup = function(e) {
+        console.log(e);
+        self.dispatchEvent(new CustomEvent('of-up', {
+            detail: {
+                e: e
+            }
+        }));
+    };
+
+    var offocusgained = function(e) {
+        focused = true;
+        self.dispatchEvent(new CustomEvent('of-focus-gained', {
+            detail: {
+                e: e
+            }
+        }));
+    };
+
+    var offocuslost = function(e) {
+        focused = false;
+        self.dispatchEvent(new CustomEvent('of-focus-lost', {
+            detail: {
+                e: e
+            }
+        }));
+    };
+
+
     var flushBuffer = function() {
         canvasCTX.drawImage(buffer, 0, 0);
     };
@@ -124,77 +249,19 @@ CanvasPrototype.attachedCallback = function() {
         return origin;
     };
 
-    document.addEventListener('mousemove', function(e) {
-        var o = self.getOrigin();
-        if (!dragging && mousedown) {
-            dragging = true;
-            self.dispatchEvent(new CustomEvent('of-dragstart',{
-                detail: {
-                    mouse:mouseLocation
-                }
-            }));
-            dragstart = new g.Point(mouseLocation.x, mouseLocation.y);
-        }
-        mouseLocation = new g.Point(e.x - o.x, e.y - o.y);
-        if (dragging) {
-            self.dispatchEvent(new CustomEvent('of-drag',{
-                detail: {
-                    mouse:mouseLocation,
-                    dragstart: dragstart
-                }
-            }));
-        }
-        if (self.bounds.contains(mouseLocation)) {
-            self.dispatchEvent(new CustomEvent('of-mousemove',{
-                detail: {
-                    mouse:mouseLocation
-                }
-            }));
-        }
-    });
+    this.hasFocus = function() {
+        return focused;
+    };
 
-    this.addEventListener('mousedown', function(e) {
+    document.addEventListener('mousemove', ofmousemove);
+    document.addEventListener('mouseup', ofmouseup);
+    focuser.addEventListener('focus', offocusgained);
+    focuser.addEventListener('blur', offocuslost);
+    this.addEventListener('mousedown', ofmousedown);
+    this.addEventListener('mouseout', ofmouseout);
+    this.addEventListener('keydown', ofkeydown);
+    this.addEventListener('keyup', ofkeyup);
 
-        mouseLocation = new g.Point(e.offsetX, e.offsetY);
-        mousedown = true;
-
-        self.dispatchEvent(new CustomEvent('of-mousedown',{
-            detail: {
-                mouse: new g.Point(e.offsetX, e.offsetY)
-            }
-        }));
-
-    });
-
-    document.addEventListener('mouseup', function() {
-        if (dragging) {
-            self.dispatchEvent(new CustomEvent('of-dragend',{
-                detail: {
-                    mouse:mouseLocation,
-                    dragstart: dragstart
-                }
-            }));
-            dragging = false;
-        }
-        mousedown = false;
-        mouseLocation = new g.Point(-1, -1);
-        self.dispatchEvent(new CustomEvent('of-mouseup',{
-            detail: {
-                    mouse:mouseLocation
-            }
-        }));
-    });
-
-    this.addEventListener('mouseout', function() {
-        if (!mousedown) {
-            mouseLocation = new g.Point(-1, -1);
-        }
-        self.dispatchEvent(new CustomEvent('of-mouseout',{
-            detail: {
-                mouse:mouseLocation
-            }
-        }));
-    });
 
     resize();
     beginPainting();
