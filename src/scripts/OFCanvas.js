@@ -185,7 +185,6 @@ CanvasPrototype.attachedCallback = function() {
     };
 
     var ofkeydown = function(e) {
-        console.log(e);
         self.dispatchEvent(new CustomEvent('of-keydown', {
             detail: {
                 e: e
@@ -194,7 +193,6 @@ CanvasPrototype.attachedCallback = function() {
     };
 
     var ofkeyup = function(e) {
-        console.log(e);
         self.dispatchEvent(new CustomEvent('of-up', {
             detail: {
                 e: e
