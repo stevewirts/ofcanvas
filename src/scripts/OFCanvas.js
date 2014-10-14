@@ -32,6 +32,7 @@ CanvasPrototype.attachedCallback = function() {
     var repeatKeyCount = 0;
     var repeatKey = null;
     var repeatKeyStartTime = 0;
+    var currentKeys = [];
 
     focuser.style.position = 'static';
     focuser.style.top = 0;
@@ -116,7 +117,8 @@ CanvasPrototype.attachedCallback = function() {
             dragging = true;
             self.dispatchEvent(new CustomEvent('of-dragstart', {
                 detail: {
-                    mouse: mouseLocation
+                    mouse: mouseLocation,
+                    keys: currentKeys
                 }
             }));
             dragstart = new g.Point(mouseLocation.x, mouseLocation.y);
@@ -126,14 +128,16 @@ CanvasPrototype.attachedCallback = function() {
             self.dispatchEvent(new CustomEvent('of-drag', {
                 detail: {
                     mouse: mouseLocation,
-                    dragstart: dragstart
+                    dragstart: dragstart,
+                    keys: currentKeys
                 }
             }));
         }
         if (self.bounds.contains(mouseLocation)) {
             self.dispatchEvent(new CustomEvent('of-mousemove', {
                 detail: {
-                    mouse: mouseLocation
+                    mouse: mouseLocation,
+                    keys: currentKeys
                 }
             }));
         }
@@ -146,10 +150,12 @@ CanvasPrototype.attachedCallback = function() {
 
         self.dispatchEvent(new CustomEvent('of-mousedown', {
             detail: {
-                mouse: new g.Point(e.offsetX, e.offsetY)
+                mouse: new g.Point(e.offsetX, e.offsetY),
+                    keys: currentKeys
             }
         }));
         self.takeFocus();
+
     };
 
     var ofmouseup = function() {
@@ -157,7 +163,8 @@ CanvasPrototype.attachedCallback = function() {
             self.dispatchEvent(new CustomEvent('of-dragend', {
                 detail: {
                     mouse: mouseLocation,
-                    dragstart: dragstart
+                    dragstart: dragstart,
+                    keys: currentKeys
                 }
             }));
             dragging = false;
@@ -166,7 +173,8 @@ CanvasPrototype.attachedCallback = function() {
         mouseLocation = new g.Point(-1, -1);
         self.dispatchEvent(new CustomEvent('of-mouseup', {
             detail: {
-                mouse: mouseLocation
+                mouse: mouseLocation,
+                    keys: currentKeys
             }
         }));
     };
@@ -177,7 +185,8 @@ CanvasPrototype.attachedCallback = function() {
         }
         self.dispatchEvent(new CustomEvent('of-mouseout', {
             detail: {
-                mouse: mouseLocation
+                mouse: mouseLocation,
+                keys: currentKeys
             }
         }));
     };
@@ -195,6 +204,9 @@ CanvasPrototype.attachedCallback = function() {
             repeatKey = null;
             repeatKeyCount = 0;
             repeatKeyStartTime = 0;
+        }
+        if (currentKeys.indexOf(keyChar) === -1) {
+            currentKeys.push(keyChar);
         }
         self.dispatchEvent(new CustomEvent('of-keydown', {
             detail: {
@@ -217,6 +229,7 @@ CanvasPrototype.attachedCallback = function() {
         repeatKeyCount = 0;
         repeatKey = null;
         repeatKeyStartTime = 0;
+        currentKeys.splice(currentKeys.indexOf(keyChar), 1);
         self.dispatchEvent(new CustomEvent('of-keyup', {
             detail: {
                 alt: e.altKey,
