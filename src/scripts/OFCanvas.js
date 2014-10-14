@@ -300,7 +300,7 @@ CanvasPrototype.attachedCallback = function() {
         if (document.activeElement !== focuser) {
             setTimeout(function() {
                 focuser.focus();
-            }, 1);
+            }, 30);
         }
     };
 
