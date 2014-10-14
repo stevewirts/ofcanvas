@@ -48,7 +48,7 @@ CanvasPrototype.attachedCallback = function() {
             var delta = now - lastRepaintTime;
             if (delta > interval && repaintNow) {
                 lastRepaintTime = now - (delta % interval);
-                paintNow();
+                self.paintNow();
             }
             requestAnimationFrame(animate);
         };
@@ -81,13 +81,13 @@ CanvasPrototype.attachedCallback = function() {
                     component.setBounds(self.bounds);
                 }
                 self.resizeNotification();
-                paintNow();
+                self.paintNow();
             }
         });
 
     }, ['update']);
 
-    var paintNow = function() {
+    this.paintNow = function() {
         var gc = buffer.getContext('2d');
         try {
             gc.save();
