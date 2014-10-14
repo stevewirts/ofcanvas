@@ -145,11 +145,7 @@ CanvasPrototype.attachedCallback = function() {
                 mouse: new g.Point(e.offsetX, e.offsetY)
             }
         }));
-        if (document.activeElement !== focuser) {
-            setTimeout(function() {
-                focuser.focus();
-            }, 1);
-        }
+        self.takeFocus();
     };
 
     var ofmouseup = function() {
@@ -265,6 +261,14 @@ CanvasPrototype.attachedCallback = function() {
 
     this.hasFocus = function() {
         return focused;
+    };
+
+    this.takeFocus = function() {
+        if (document.activeElement !== focuser) {
+            setTimeout(function() {
+                focuser.focus();
+            }, 1);
+        }
     };
 
     document.addEventListener('mousemove', ofmousemove);
