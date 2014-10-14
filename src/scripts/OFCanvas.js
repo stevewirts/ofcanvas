@@ -295,9 +295,9 @@ CanvasPrototype.attachedCallback = function() {
     this.addEventListener('keydown', ofkeydown);
     this.addEventListener('keyup', ofkeyup);
 
-    this.addEventListener('of-keydown', function(e) {
-        console.log(e.detail.repeatCount);
-    });
+    // this.addEventListener('of-keydown', function(e) {
+    //     console.log(e.detail.repeatCount);
+    // });
 
     resize();
     beginPainting();
