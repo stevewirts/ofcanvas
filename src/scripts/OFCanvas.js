@@ -31,6 +31,7 @@ CanvasPrototype.attachedCallback = function() {
     var focused = false;
     var repeatKeyCount = 0;
     var repeatKey = null;
+    var repeatKeyStartTime = 0;
 
     focuser.style.position = 'static';
     focuser.style.top = 0;
@@ -188,10 +189,12 @@ CanvasPrototype.attachedCallback = function() {
                 repeatKeyCount++;
             } else {
                 repeatKey = keyChar;
+                repeatKeyStartTime = Date.now();
             }
         } else {
             repeatKey = null;
             repeatKeyCount = 0;
+            repeatKeyStartTime = 0;
         }
         self.dispatchEvent(new CustomEvent('of-keydown', {
             detail: {
@@ -202,6 +205,7 @@ CanvasPrototype.attachedCallback = function() {
                 key: e.keyCode,
                 meta: e.metaKey,
                 repeatCount: repeatKeyCount,
+                repeatStartTime: repeatKeyStartTime,
                 shift: e.shiftKey,
                 identifier: e.keyIdentifier
             }
@@ -212,6 +216,7 @@ CanvasPrototype.attachedCallback = function() {
         var keyChar = e.shiftKey ? charMap[e.keyCode][1] : charMap[e.keyCode][0];
         repeatKeyCount = 0;
         repeatKey = null;
+        repeatKeyStartTime = 0;
         self.dispatchEvent(new CustomEvent('of-keyup', {
             detail: {
                 alt: e.altKey,
