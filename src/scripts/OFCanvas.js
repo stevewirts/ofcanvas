@@ -29,6 +29,9 @@ CanvasPrototype.attachedCallback = function() {
     shadowRoot.appendChild(document.createElement('button'));
     var focuser = shadowRoot.querySelector('button');
     var focused = false;
+    var repeatKeyCount = 0;
+    var repeatKey = null;
+
     focuser.style.position = 'static';
     focuser.style.top = 0;
     focuser.style.right = '100%';
@@ -180,6 +183,16 @@ CanvasPrototype.attachedCallback = function() {
 
     var ofkeydown = function(e) {
         var keyChar = e.shiftKey ? charMap[e.keyCode][1] : charMap[e.keyCode][0];
+        if (e.repeat) {
+            if (repeatKey === keyChar) {
+                repeatKeyCount++;
+            } else {
+                repeatKey = keyChar;
+            }
+        } else {
+            repeatKey = null;
+            repeatKeyCount = 0;
+        }
         self.dispatchEvent(new CustomEvent('of-keydown', {
             detail: {
                 alt: e.altKey,
@@ -188,7 +201,7 @@ CanvasPrototype.attachedCallback = function() {
                 code: e.charCode,
                 key: e.keyCode,
                 meta: e.metaKey,
-                repeat: e.repeat,
+                repeatCount: repeatKeyCount,
                 shift: e.shiftKey,
                 identifier: e.keyIdentifier
             }
@@ -197,6 +210,8 @@ CanvasPrototype.attachedCallback = function() {
 
     var ofkeyup = function(e) {
         var keyChar = e.shiftKey ? charMap[e.keyCode][1] : charMap[e.keyCode][0];
+        repeatKeyCount = 0;
+        repeatKey = null;
         self.dispatchEvent(new CustomEvent('of-keyup', {
             detail: {
                 alt: e.altKey,
@@ -280,6 +295,9 @@ CanvasPrototype.attachedCallback = function() {
     this.addEventListener('keydown', ofkeydown);
     this.addEventListener('keyup', ofkeyup);
 
+    this.addEventListener('of-keydown', function(e) {
+        console.log(e.detail.repeatCount);
+    });
 
     resize();
     beginPainting();
