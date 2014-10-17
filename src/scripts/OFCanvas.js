@@ -151,7 +151,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-mousedown', {
             detail: {
                 mouse: new g.Point(e.offsetX, e.offsetY),
-                    keys: currentKeys
+                keys: currentKeys
             }
         }));
         self.takeFocus();
@@ -174,7 +174,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-mouseup', {
             detail: {
                 mouse: mouseLocation,
-                    keys: currentKeys
+                keys: currentKeys
             }
         }));
     };
