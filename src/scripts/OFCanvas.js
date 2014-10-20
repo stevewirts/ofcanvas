@@ -324,9 +324,9 @@ CanvasPrototype.attachedCallback = function() {
     this.addEventListener('keyup', ofkeyup);
     this.addEventListener('dblclick', ofdblclick);
 
-    this.addEventListener('of-dblclick', function(e) {
-        console.log(e.detail);
-    });
+    // this.addEventListener('of-dblclick', function(e) {
+    //     console.log(e.detail);
+    // });
 
     resize();
     beginPainting();
