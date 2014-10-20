@@ -191,7 +191,8 @@ CanvasPrototype.attachedCallback = function() {
         }));
     };
 
-    var ofdblclick = function() {
+    var ofdblclick = function(e) {
+        mouseLocation = new g.Point(e.offsetX, e.offsetY);
         self.dispatchEvent(new CustomEvent('of-dblclick', {
             detail: {
                 mouse: mouseLocation,
@@ -323,9 +324,9 @@ CanvasPrototype.attachedCallback = function() {
     this.addEventListener('keyup', ofkeyup);
     this.addEventListener('dblclick', ofdblclick);
 
-    // this.addEventListener('of-dblclick', function(e) {
-    //     console.log(e.detail);
-    // });
+    this.addEventListener('of-dblclick', function(e) {
+        console.log(e.detail);
+    });
 
     resize();
     beginPainting();
