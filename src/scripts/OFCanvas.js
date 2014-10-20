@@ -191,6 +191,15 @@ CanvasPrototype.attachedCallback = function() {
         }));
     };
 
+    var ofdblclick = function() {
+        self.dispatchEvent(new CustomEvent('of-dblclick', {
+            detail: {
+                mouse: mouseLocation,
+                keys: currentKeys
+            }
+        }));
+    };
+
     var ofkeydown = function(e) {
         var keyChar = e.shiftKey ? charMap[e.keyCode][1] : charMap[e.keyCode][0];
         if (e.repeat) {
@@ -312,10 +321,11 @@ CanvasPrototype.attachedCallback = function() {
     this.addEventListener('mouseout', ofmouseout);
     this.addEventListener('keydown', ofkeydown);
     this.addEventListener('keyup', ofkeyup);
+    this.addEventListener('dblclick', ofdblclick);
 
-    // this.addEventListener('of-keydown', function(e) {
-    //     console.log(e.detail.repeatCount);
-    // });
+    this.addEventListener('of-dblclick', function(e) {
+        console.log(e.detail);
+    });
 
     resize();
     beginPainting();
