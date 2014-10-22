@@ -118,7 +118,7 @@ CanvasPrototype.attachedCallback = function() {
             self.dispatchEvent(new CustomEvent('of-dragstart', {
                 detail: {
                     mouse: mouseLocation,
-                    keys: currentKeys
+                    keys: currentKeys.slice(0)
                 }
             }));
             dragstart = new g.Point(mouseLocation.x, mouseLocation.y);
@@ -129,7 +129,7 @@ CanvasPrototype.attachedCallback = function() {
                 detail: {
                     mouse: mouseLocation,
                     dragstart: dragstart,
-                    keys: currentKeys
+                    keys: currentKeys.slice(0)
                 }
             }));
         }
@@ -137,7 +137,7 @@ CanvasPrototype.attachedCallback = function() {
             self.dispatchEvent(new CustomEvent('of-mousemove', {
                 detail: {
                     mouse: mouseLocation,
-                    keys: currentKeys
+                    keys: currentKeys.slice(0)
                 }
             }));
         }
@@ -151,7 +151,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-mousedown', {
             detail: {
                 mouse: new g.Point(e.offsetX, e.offsetY),
-                keys: currentKeys
+                keys: currentKeys.slice(0)
             }
         }));
         self.takeFocus();
@@ -164,7 +164,7 @@ CanvasPrototype.attachedCallback = function() {
                 detail: {
                     mouse: mouseLocation,
                     dragstart: dragstart,
-                    keys: currentKeys
+                    keys: currentKeys.slice(0)
                 }
             }));
             dragging = false;
@@ -174,7 +174,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-mouseup', {
             detail: {
                 mouse: mouseLocation,
-                keys: currentKeys
+                keys: currentKeys.slice(0)
             }
         }));
     };
@@ -186,7 +186,17 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-mouseout', {
             detail: {
                 mouse: mouseLocation,
-                keys: currentKeys
+                keys: currentKeys.slice(0)
+            }
+        }));
+    };
+
+    var ofclick = function(e) {
+        mouseLocation = new g.Point(e.offsetX, e.offsetY);
+        self.dispatchEvent(new CustomEvent('of-click', {
+            detail: {
+                mouse: mouseLocation,
+                keys: currentKeys.slice(0)
             }
         }));
     };
@@ -196,7 +206,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-dblclick', {
             detail: {
                 mouse: mouseLocation,
-                keys: currentKeys
+                keys: currentKeys.slice(0)
             }
         }));
     };
@@ -310,7 +320,7 @@ CanvasPrototype.attachedCallback = function() {
         if (document.activeElement !== focuser) {
             setTimeout(function() {
                 focuser.focus();
-            }, 30);
+            }, 10);
         }
     };
 
@@ -322,9 +332,10 @@ CanvasPrototype.attachedCallback = function() {
     this.addEventListener('mouseout', ofmouseout);
     this.addEventListener('keydown', ofkeydown);
     this.addEventListener('keyup', ofkeyup);
+    this.addEventListener('click', ofclick);
     this.addEventListener('dblclick', ofdblclick);
 
-    // this.addEventListener('of-dblclick', function(e) {
+    // this.addEventListener('of-click', function(e) {
     //     console.log(e.detail);
     // });
 
