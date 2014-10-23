@@ -129,7 +129,7 @@ CanvasPrototype.attachedCallback = function() {
                 detail: {
                     mouse: mouseLocation,
                     dragstart: dragstart,
-                    keys: currentKeys.slice(0)
+                    keys: currentKeys
                 }
             }));
         }
