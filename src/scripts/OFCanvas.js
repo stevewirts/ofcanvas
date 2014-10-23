@@ -294,14 +294,17 @@ CanvasPrototype.attachedCallback = function() {
 
     this.addComponent = function(comp) {
         component.addComponent(comp);
+        resize();
     };
 
     this.removeComponent = function(comp) {
         component.removeComponent(comp);
+        resize();
     };
 
     this.clearComponents = function() {
         component.clearComponents();
+        resize();
     };
 
     this.getMouseLocation = function() {
