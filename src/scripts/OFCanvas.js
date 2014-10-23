@@ -118,7 +118,7 @@ CanvasPrototype.attachedCallback = function() {
             self.dispatchEvent(new CustomEvent('of-dragstart', {
                 detail: {
                     mouse: mouseLocation,
-                    keys: currentKeys.slice(0)
+                    keys: currentKeys
                 }
             }));
             dragstart = new g.Point(mouseLocation.x, mouseLocation.y);
@@ -137,7 +137,7 @@ CanvasPrototype.attachedCallback = function() {
             self.dispatchEvent(new CustomEvent('of-mousemove', {
                 detail: {
                     mouse: mouseLocation,
-                    keys: currentKeys.slice(0)
+                    keys: currentKeys
                 }
             }));
         }
@@ -151,7 +151,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-mousedown', {
             detail: {
                 mouse: new g.Point(e.offsetX, e.offsetY),
-                keys: currentKeys.slice(0)
+                keys: currentKeys
             }
         }));
         self.takeFocus();
@@ -164,7 +164,7 @@ CanvasPrototype.attachedCallback = function() {
                 detail: {
                     mouse: mouseLocation,
                     dragstart: dragstart,
-                    keys: currentKeys.slice(0)
+                    keys: currentKeys
                 }
             }));
             dragging = false;
@@ -174,7 +174,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-mouseup', {
             detail: {
                 mouse: mouseLocation,
-                keys: currentKeys.slice(0)
+                keys: currentKeys
             }
         }));
     };
@@ -186,7 +186,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-mouseout', {
             detail: {
                 mouse: mouseLocation,
-                keys: currentKeys.slice(0)
+                keys: currentKeys
             }
         }));
     };
@@ -196,7 +196,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-click', {
             detail: {
                 mouse: mouseLocation,
-                keys: currentKeys.slice(0)
+                keys: currentKeys
             }
         }));
     };
@@ -206,7 +206,7 @@ CanvasPrototype.attachedCallback = function() {
         self.dispatchEvent(new CustomEvent('of-dblclick', {
             detail: {
                 mouse: mouseLocation,
-                keys: currentKeys.slice(0)
+                keys: currentKeys
             }
         }));
     };
