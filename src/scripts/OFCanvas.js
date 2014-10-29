@@ -77,20 +77,14 @@ CanvasPrototype.attachedCallback = function() {
         size = self.getBoundingClientRect();
         origin = new g.Point(size.left, size.top);
         self.bounds = new g.Rectangle(0, 0, size.width, size.height);
-    };
-
-    Object.observe(this, function(changes) {
-        changes.forEach(function(e) {
-            if (e.name === 'bounds') {
-                if (component) {
-                    component.setBounds(self.bounds);
-                }
-                self.resizeNotification();
-                self.paintNow();
+        setTimeout(function() {
+            if (component) {
+                component.setBounds(self.bounds);
             }
-        });
-
-    }, ['update']);
+            self.resizeNotification();
+            self.paintNow();
+        },10);
+    };
 
     this.paintNow = function() {
         var gc = buffer.getContext('2d');
