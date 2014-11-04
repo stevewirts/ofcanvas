@@ -27,7 +27,8 @@
     "tests"
   ],
   "devDependencies": {
-    "rectangles": "*"
+    "rectangles": "*",
+    "webcomponents.js": "polymer/webcomponentsjs#~0.4.2"
   },
   "dependencies": {
     "rectangles": "*"
