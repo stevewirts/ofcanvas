@@ -36,8 +36,10 @@ function OFCanvasComponent() {
         try {
             gc.save();
             gc.translate(bounds.left(), bounds.top());
-            gc.rect(0, 0, bounds.width(), bounds.height());
-            gc.clip();
+            // bug in mozilla canvas of mac workaround
+            // don't use cliping
+            // gc.rect(0, 0, bounds.width(), bounds.height());
+            // gc.clip();
             var bgColor = this.getBackgroundColor();
             if (bgColor) {
                 var rect = this.getBounds();

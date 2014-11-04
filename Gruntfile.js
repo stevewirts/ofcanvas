@@ -10,7 +10,6 @@ var files = {
 
     jshint: [
         'gruntfile.js',
-        'examples/**/*.js',
         'src/**/*.js',
         'test/**/*.js'
     ],
@@ -227,7 +226,8 @@ module.exports = function(grunt) {
                     open: true,
                     base: [
                         'build',
-                        'examples/dev'
+                        'examples/dev',
+                        'bower_components'
                     ]
                 }
             }

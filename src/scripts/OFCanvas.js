@@ -72,8 +72,8 @@ CanvasPrototype.attachedCallback = function() {
     };
 
     var resize = function() {
-        canvas.width = buffer.width = self.scrollWidth;
-        canvas.height = buffer.height = self.scrollHeight;
+        canvas.width = buffer.width = self.clientWidth;
+        canvas.height = buffer.height = self.clientHeight;
         size = self.getBoundingClientRect();
         origin = new g.Point(size.left, size.top);
         self.bounds = new g.Rectangle(0, 0, size.width, size.height);
@@ -83,11 +83,11 @@ CanvasPrototype.attachedCallback = function() {
             }
             self.resizeNotification();
             self.paintNow();
-        },10);
+        }, 10);
     };
 
     this.paintNow = function() {
-        var gc = buffer.getContext('2d');
+        var gc = this.ctx;
         try {
             gc.save();
             gc.clearRect(0, 0, canvas.width, canvas.height);
@@ -336,8 +336,10 @@ CanvasPrototype.attachedCallback = function() {
     //     console.log(e.detail);
     // });
 
+    this.ctx = buffer.getContext('2d');
     resize();
     beginPainting();
+
 };
 
 CanvasPrototype.resizeNotification = function() {

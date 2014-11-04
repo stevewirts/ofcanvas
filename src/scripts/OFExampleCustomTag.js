@@ -10,12 +10,13 @@ var OFExampleCustomTag = Object.create(HTMLElement.prototype);
 
 OFExampleCustomTag.attachedCallback = function() {
 
+    var self = this;
     var canvas = new OFCanvas();
     canvas.setAttribute('fps', 30);
 
-    this.shadowRoot = this.createShadowRoot();
-    this.shadowRoot.appendChild(canvas);
-    this.canvas = this.shadowRoot.querySelector('open-canvas');
+    this.root = this.createShadowRoot();
+    this.root.appendChild(canvas);
+    this.canvas = this.root.querySelector('open-canvas');
 
     //lets make the canvas take our entire space
     this.canvas.style.position = 'absolute';
@@ -24,6 +25,13 @@ OFExampleCustomTag.attachedCallback = function() {
     this.canvas.style.bottom = 0;
     this.canvas.style.left = 0;
 
+    setTimeout(function() {
+        self.buildGui();
+    }, 10);
+
+};
+
+OFExampleCustomTag.buildGui = function() {
     var comp = new OFCanvasBorderComponent(new OFCanvasComponent());
     comp.setColor('red');
     var props = {
@@ -45,9 +53,7 @@ OFExampleCustomTag.attachedCallback = function() {
     };
     comp2.setLayoutProperties(props2);
     this.canvas.addComponent(comp2);
-
 };
-
 module.exports = document.registerElement('of-example-custom-tag', {
     prototype: OFExampleCustomTag
 });
