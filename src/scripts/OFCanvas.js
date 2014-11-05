@@ -206,6 +206,9 @@ CanvasPrototype.attachedCallback = function() {
     };
 
     var ofkeydown = function(e) {
+        if (!this.hasFocus()) {
+            return;
+        }
         var keyChar = e.shiftKey ? charMap[e.keyCode][1] : charMap[e.keyCode][0];
         if (e.repeat) {
             if (repeatKey === keyChar) {
@@ -239,6 +242,9 @@ CanvasPrototype.attachedCallback = function() {
     };
 
     var ofkeyup = function(e) {
+        if (!this.hasFocus()) {
+            return;
+        }
         var keyChar = e.shiftKey ? charMap[e.keyCode][1] : charMap[e.keyCode][0];
         repeatKeyCount = 0;
         repeatKey = null;
@@ -327,8 +333,8 @@ CanvasPrototype.attachedCallback = function() {
     focuser.addEventListener('blur', offocuslost);
     this.addEventListener('mousedown', ofmousedown);
     this.addEventListener('mouseout', ofmouseout);
-    this.addEventListener('keydown', ofkeydown);
-    this.addEventListener('keyup', ofkeyup);
+    document.addEventListener('keydown', ofkeydown);
+    document.addEventListener('keyup', ofkeyup);
     this.addEventListener('click', ofclick);
     this.addEventListener('dblclick', ofdblclick);
 
