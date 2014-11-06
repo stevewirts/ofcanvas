@@ -117,7 +117,7 @@ CanvasPrototype.attachedCallback = function() {
             }));
             dragstart = new g.Point(mouseLocation.x, mouseLocation.y);
         }
-        mouseLocation = new g.Point(e.x - o.x, e.y - o.y);
+        mouseLocation = new g.Point((e.x || e.layerX) - o.x, (e.y || e.layerY) - o.y);
         if (dragging) {
             self.dispatchEvent(new CustomEvent('of-drag', {
                 detail: {
@@ -139,12 +139,12 @@ CanvasPrototype.attachedCallback = function() {
 
     var ofmousedown = function(e) {
 
-        mouseLocation = new g.Point(e.offsetX, e.offsetY);
+        mouseLocation = new g.Point((e.offsetX || e.layerX), (e.offsetY || e.layerY));
         mousedown = true;
 
         self.dispatchEvent(new CustomEvent('of-mousedown', {
             detail: {
-                mouse: new g.Point(e.offsetX, e.offsetY),
+                mouse: new g.Point((e.offsetX || e.layerX), (e.offsetY || e.layerY)),
                 keys: currentKeys
             }
         }));
