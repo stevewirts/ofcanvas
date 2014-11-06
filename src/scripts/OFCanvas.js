@@ -77,13 +77,13 @@ CanvasPrototype.attachedCallback = function() {
         size = self.getBoundingClientRect();
         origin = new g.Point(size.left, size.top);
         self.bounds = new g.Rectangle(0, 0, size.width, size.height);
-        setTimeout(function() {
-            if (component) {
-                component.setBounds(self.bounds);
-            }
-            self.resizeNotification();
-            self.paintNow();
-        }, 10);
+        //setTimeout(function() {
+        if (component) {
+            component.setBounds(self.bounds);
+        }
+        self.resizeNotification();
+        self.paintNow();
+        //});
     };
 
     this.paintNow = function() {
