@@ -1,10 +1,10 @@
 {
   "name": "ofcanvas",
   "main": "src/scripts/main.js",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "https://github.com/stevewirts/ofcanvas",
   "authors": [
-    "steve wirts <stevewirts@gmail.com>"
+    "steve wirts <swirts@openfin.co>"
   ],
   "description": "this is a custom web component canvas control and includes a small ui framework for building custom components that render on the canvas",
   "keywords": [
@@ -27,10 +27,9 @@
     "tests"
   ],
   "devDependencies": {
-    "rectangles": "*",
+    "rectangles": "0.1.0",
     "webcomponents.js": "polymer/webcomponentsjs#~0.4.2"
   },
   "dependencies": {
-    "rectangles": "*"
   }
 }
